@@ -1,4 +1,4 @@
 from .dqn import DQNAgent
-# from .ppo import PPOAgent
+from .ppo import PPOAgent
 
-__all__ = ["DQNAgent"]
+__all__ = ["DQNAgent", "PPOAgent"]
