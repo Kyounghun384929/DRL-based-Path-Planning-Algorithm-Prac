@@ -61,30 +61,27 @@ class PPOAgent:
         # Get batch
         s, a, r, ns, old_log_prob, done = self.make_batch()
         
-        # Advantage estimation (GAE)
+        # Calculate Monte Carlo Returns (Discounted Rewards)
+        rewards = []
+        discounted_reward = 0
+        # r is tensor (Batch, 1), done is tensor (Batch, 1)
+        r_numpy = r.cpu().numpy().flatten()
+        done_numpy = done.cpu().numpy().flatten()
+        
+        for reward, is_not_done in zip(reversed(r_numpy), reversed(done_numpy)):
+            if is_not_done == 0:
+                discounted_reward = 0
+            discounted_reward = reward + (self.gamma * discounted_reward * is_not_done)
+            rewards.insert(0, discounted_reward)
+            
+        # Normalize Returns
+        rewards = torch.tensor(rewards, dtype=torch.float32).to(self.device).unsqueeze(1)
+        rewards = (rewards - rewards.mean()) / (rewards.std() + 1e-7)
+        
+        # Calculate Advantage
         with torch.no_grad():
-            values      = self.policy.critic(s).squeeze(-1).unsqueeze(1)
-            next_values = self.policy.critic(ns).squeeze(-1).unsqueeze(1)
-            
-            # TD Target
-            td_target = r + self.gamma * next_values * done
-            delta     = td_target - values
-            
-            # GAE
-            advantage_lst = []
-            advantage = 0.0
-            for delta_t in delta.cpu().numpy()[::-1]:
-                advantage = self.gamma * self.lmbda * advantage + delta_t[0]
-                advantage_lst.append([advantage])
-            advantage_lst.reverse()
-            
-            advantage = torch.tensor(advantage_lst, dtype=torch.float).to(self.device)
-            
-            # Normalization
-            advantage = (advantage - advantage.mean()) / (advantage.std() + 1e-8)
-            
-            # Critic Loss
-            target_val = values + advantage
+             values = self.policy.critic(s)
+             advantage = rewards - values
         
         # PPO Update
         for _ in range(self.K_epochs):
@@ -101,7 +98,7 @@ class PPOAgent:
             
             # Loss
             actor_loss = -torch.min(surr1, surr2).mean()
-            critic_loss = self.mse_loss(curr_val, target_val)
+            critic_loss = self.mse_loss(curr_val, rewards)
             entropy_loss = -0.01 * entropy.mean()
             
             loss = actor_loss + 0.5 * critic_loss + entropy_loss
