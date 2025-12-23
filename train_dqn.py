@@ -3,7 +3,6 @@ import os
 import csv
 import time
 import torch
-# import wandb
 import numpy as np
 
 # from src.envs.env_2d import Simple2DGridENV
@@ -33,8 +32,6 @@ def get_args():
     parser.add_argument("--exp_name", type=str, default="default_exp", help="Experiment name")
     parser.add_argument("--save_dir", type=str, default="./db/saves", help="Directory to save models")
     parser.add_argument("--log_dir", type=str, default="./logs", help="Directory to save logs")
-    parser.add_argument("--use_wandb", action="store_true", help="Use WandB for logging")
-    parser.add_argument("--wandb_project", type=str, default="multi-agent-path-planning", help="WandB project name")
     parser.add_argument("--save_freq", type=int, default=100, help="Save model every N episodes")
     
     return parser.parse_args()
@@ -78,9 +75,6 @@ def main():
     # Define save directory: ./db/saves/{algorithm}/{YYYYMMDD}/
     save_dir = os.path.join(args.save_dir, args.algo, date_str)
     os.makedirs(save_dir, exist_ok=True)
-    
-    if args.use_wandb:
-        wandb.init(project=args.wandb_project, name=run_name, config=args)
     
     csv_file = open(os.path.join(args.log_dir, f"{run_name}.csv"), "w", newline="")
     csv_writer = csv.writer(csv_file)
@@ -139,16 +133,6 @@ def main():
         csv_writer.writerow([episode, episode_reward, steps, epsilon, avg_loss])
         csv_file.flush()
         
-        if args.use_wandb:
-            wandb.log({
-                "episode": episode,
-                "reward": episode_reward,
-                "steps": steps,
-                "epsilon": epsilon,
-                "loss": avg_loss
-            })
-        
-        
         # Save model
         if episode % args.save_freq == 0:
             save_path = os.path.join(save_dir, f"ep{episode}.pth")
@@ -163,8 +147,6 @@ def main():
     
     
     csv_file.close()
-    if args.use_wandb:
-        wandb.finish()
         
     # 학습 종료 시 최종 모델 저장
     final_save_path = os.path.join(save_dir, f"final.pth")
