@@ -8,7 +8,8 @@
 # 향후 알고리즘 추가 계획
 
 - Single-Agent
-    - [ ] PPO(Proximal Policy Optimization)
+    - [x] DQN(Deep Q-Network)
+    - [x] PPO(Proximal Policy Optimization)
     - [ ] A3C(Asynchronous Advantage Actor-Critic)
     - [ ] DDPG(Deep Deterministic Policy Gradient)
     - [ ] SAC(Soft Actor-Critic)
