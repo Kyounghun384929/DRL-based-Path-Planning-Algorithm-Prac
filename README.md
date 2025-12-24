@@ -2,7 +2,8 @@
 
 This repository aims to implement path planning algorithms based on deep reinforcement learning (DRL).
 
-It addresses the problem of an agent navigating to a goal in simple 2D and 3D grid environments. Currently, agents are trained using the DQN (Deep Q-Network) algorithm.
+It addresses the problem of an agent navigating to a goal in simple 2D and 3D grid environments.  
+Currently, agents are trained using the DQN (Deep Q-Network) and PPO (Proximal Policy Optimization) algorithms.
 
 # Planned Algorithm Additions
 
