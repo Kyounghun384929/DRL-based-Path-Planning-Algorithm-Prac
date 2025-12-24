@@ -64,6 +64,6 @@ Setting:
 ![2D_PPO](docs/2D-ppo.gif)
 
 Kyounghun Kim  
-kyounghun2848@gmail.com  
+sdrudgnsdl@kw.ac.kr
 Seoul, South Korea  
 Kwangwoon Univ.  
