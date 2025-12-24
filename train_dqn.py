@@ -1,9 +1,8 @@
-import argparse
 import os
 import csv
 import time
 import torch
-import numpy as np
+import argparse
 
 # from src.envs.env_2d import Simple2DGridENV
 # from src.envs.env_3d import Simple3DGridENV
@@ -19,7 +18,6 @@ def get_args():
     parser.add_argument("--max_steps", type=int, default=200, help="Max steps per episode")
     
     # Algorithm settings
-    parser.add_argument("--algo", type=str, default="dqn", choices=["dqn", "ppo"], help="Algorithm to use")
     parser.add_argument("--lr", type=float, default=0.001, help="Learning rate")
     parser.add_argument("--use_noisy", action="store_true", help="Use NoisyNet for DQN")
     
@@ -54,40 +52,37 @@ def main():
     action_dim = 4 if args.env_name == "2d" else 6
     
     # Initialize Agent
-    if args.algo == "dqn":
-        agent = DQNAgent(
-            state_dim=state_dim, 
-            action_dim=action_dim, 
-            lr=args.lr, 
-            use_noisy=args.use_noisy, 
-            device=device,
-        )
-    elif args.algo == "ppo":
-        raise NotImplementedError("PPO not implemented yet")
-    else:
-        raise ValueError(f"Unknown algorithm: {args.algo}")
+    agent = DQNAgent(
+        state_dim=state_dim, 
+        action_dim=action_dim, 
+        lr=args.lr, 
+        use_noisy=args.use_noisy, 
+        device=device,
+    )
 
     # Logging setup
     timestamp = time.strftime("%Y%m%d-%H%M%S")
-    date_str = time.strftime("%Y%m%d_%H%M%S")
-    run_name = f"{args.algo}_{args.env_name}_{args.exp_name}_{timestamp}"
     
-    # Define save directory: ./db/saves/{algorithm}/{YYYYMMDD}/
-    save_dir = os.path.join(args.save_dir, args.algo, date_str)
+    # Define directories
+    save_dir = os.path.join(args.save_dir, "dqn", args.env_name, timestamp)
+    log_dir = os.path.join(args.log_dir, "dqn", args.env_name, timestamp)
+    
     os.makedirs(save_dir, exist_ok=True)
+    os.makedirs(log_dir, exist_ok=True)
     
-    csv_file = open(os.path.join(args.log_dir, f"{run_name}.csv"), "w", newline="")
+    csv_path = os.path.join(log_dir, f"dqn_{args.env_name}_{args.exp_name}_{timestamp}.csv")
+    csv_file = open(csv_path, "w", newline="")
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(["episode", "reward", "steps", "epsilon", "loss"])
     
     print(f"Start training {args.algo} on {args.env_name} environment...")
     
     for episode in range(1, args.episodes + 1):
-        state = env.reset()
+        state          = env.reset()
         episode_reward = 0
-        steps = 0
-        loss = 0
-        done = False
+        steps          = 0
+        loss           = 0
+        done           = False
         
         while not done:
             action = agent.get_action(state)
