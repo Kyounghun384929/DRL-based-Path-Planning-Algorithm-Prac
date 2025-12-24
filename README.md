@@ -44,11 +44,24 @@
 
 # 시뮬레이션 결과
 
-### 2D 환경 - DQN
+## 2D 환경 
 
-Model Path: db\saves\dqn\2d\20251223_141101\final.pth
+### DQN
+
+Model Path: db\saves\dqn\2d\20251223_141101\final.pth  
+Setting: 
+- max_steps=200, 
+- max_episodes=1000  
 
 ![2D_DQN](docs/2D-dqn.gif)
+
+### PPO
+Model Path: db\saves\ppo\2d\ppo_agent_best.pth  
+Setting: 
+- max_steps=500, 
+- max_episodes=1000  
+
+![2D_PPO](docs/2D-ppo.gif)
 
 Kyounghun Kim  
 kyounghun2848@gmail.com  
