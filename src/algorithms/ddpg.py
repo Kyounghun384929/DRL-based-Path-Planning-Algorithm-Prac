@@ -72,8 +72,7 @@ class DDPGAgent:
             noise_val = noise.sample()
             action += noise_val
         
-        
-        return action.clamp(-1.0, 1.0)
+        return action.clamp(-1.0, 1.0).squeeze(0)
     
     def soft_update(self, target, source):
         for target_param, source_param in zip(target.parameters(), source.parameters()):
@@ -91,9 +90,9 @@ class DDPGAgent:
         states = torch.stack([s if isinstance(s, torch.Tensor) else convert_to_tensor(s, device=self.device) for s in state]).to(self.device)
         next_states = torch.stack([ns if isinstance(ns, torch.Tensor) else convert_to_tensor(ns, device=self.device) for ns in next_state]).to(self.device)
         
-        actions = torch.tensor(action, device=self.device)
-        rewards = torch.tensor(reward, device=self.device).unsqueeze(1)
-        dones   = torch.tensor(done, device=self.device).unsqueeze(1)
+        actions = action.to(self.device)
+        rewards = reward.to(self.device).unsqueeze(1)
+        dones   = done.to(self.device, dtype=torch.float32).unsqueeze(1)
         
         # Critic update
         with torch.no_grad():
@@ -123,7 +122,6 @@ class DDPGAgent:
         self.soft_update(self.target_actor, self.actor)
         self.soft_update(self.target_critic, self.critic)
         
-        return actor_loss.item(), critic_loss.item()
     
     
 if __name__ == "__main__":
