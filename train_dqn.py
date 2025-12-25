@@ -75,7 +75,7 @@ def main():
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(["episode", "reward", "steps", "epsilon", "loss"])
     
-    print(f"Start training {args.algo} on {args.env_name} environment...")
+    print(f"Start training DQN on {args.env_name} environment...")
     
     for episode in range(1, args.episodes + 1):
         state          = env.reset()
