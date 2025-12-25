@@ -8,10 +8,10 @@ Currently, agents are trained using the DQN (Deep Q-Network) and PPO (Proximal P
 # Planned Algorithm Additions
 
 - Single-Agent
-    - [x] DQN (Deep Q-Network)
-    - [x] PPO (Proximal Policy Optimization)
+    - [x] DQN (Deep Q-Network)   (Done 2025-12-23)
+    - [x] PPO (Proximal Policy Optimization) (Done 2025-12-24)
     - [ ] A3C (Asynchronous Advantage Actor-Critic)
-    - [ ] DDPG (Deep Deterministic Policy Gradient)
+    - [x] DDPG (Deep Deterministic Policy Gradient) (Almost done 2025-12-25, but there need some fixes)
     - [ ] SAC (Soft Actor-Critic)
     
 - Multi-Agent
