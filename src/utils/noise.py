@@ -18,9 +18,17 @@ class OUNoise:
         mode: "Gaussian" or "Ornstein-Uhlenbeck"
         """
         x = self.state
-        if mode == "Gaussian": # To be Fixed
-            return torch.normal(self.mu, self.sigma, size=(self.action_dim,), device=self.device)
-        else: # Use Ornstein-Uhlenbeck process
-            dx = self.theta * (self.mu - x) + self.sigma * torch.randn(len(x), device=self.device)
+        dx = self.theta * (self.mu - x) + self.sigma * torch.randn(len(x), device=self.device)
         self.state = x + dx
         return self.state
+    
+
+class GaussianNoise:
+    def __init__(self, action_dim, **kwargs):
+        self.device     = kwargs.get("device", "cpu")
+        self.action_dim = action_dim
+        self.mu         = kwargs.get("mu", 0.0)
+        self.sigma      = kwargs.get("sigma", 0.1)
+        
+    def sample(self):
+        return torch.normal(self.mu, self.sigma, size=(self.action_dim,), device=self.device)
