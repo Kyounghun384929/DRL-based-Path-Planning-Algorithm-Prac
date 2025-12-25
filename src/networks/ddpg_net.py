@@ -25,7 +25,7 @@ class DDPG_Actor(nn.Module):
         for m in self.modules():
             if isinstance(m, nn.Linear):
                 nn.init.xavier_uniform_(m.weight)
-                nn.init.zeros_(m.bias, 0.0)
+                nn.init.zeros_(m.bias)
     
     def forward(self, state):
         x = self.layers(state)
@@ -55,7 +55,7 @@ class DDPG_Critic(nn.Module):
         for m in self.modules():
             if isinstance(m, nn.Linear):
                 nn.init.xavier_uniform_(m.weight)
-                nn.init.zeros_(m.bias, 0.0)
+                nn.init.zeros_(m.bias)
     
     def forward(self, state, action):
         # Concat (Batch, State) + (Batch, Action) -> (Batch, State + Action)
