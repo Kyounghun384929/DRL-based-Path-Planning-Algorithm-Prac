@@ -19,6 +19,7 @@ Currently, agents are trained using the DQN (Deep Q-Network) and PPO (Proximal P
     - [x] VDN (Value Decomposition Networks) (Done 2026-01-12)
     - [ ] MADDPG (Multi-Agent Deep Deterministic Policy Gradient)
     - [x] QMIX (Done 2026-01-12)
+    - [x] MAPPO (Multi-Agent PPO) (Done 2026-01-12)
     - [ ] COMA (Counterfactual Multi-Agent Policy Gradients)
 
 

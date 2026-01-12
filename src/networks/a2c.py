@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.distributions import Categorical
 
 
@@ -124,6 +125,40 @@ class Distributional_A2C(nn.Module):
         v_values = q_values.mean(dim=1) # (B,)
         
         return action_logprobs, v_values, dist_entropy, q_values
+
+
+class Actor(nn.Module):
+    def __init__(self, state_dim, action_dim):
+        super(Actor, self).__init__()
+        self.net = nn.Sequential(
+            nn.Linear(state_dim, 64),
+            nn.Tanh(), # PPO는 보통 Tanh를 선호
+            nn.Linear(64, 64),
+            nn.Tanh(),
+            nn.Linear(64, action_dim)
+        )
+        
+    def forward(self, x):
+        logits = self.net(x)
+        return F.softmax(logits, dim=-1)
+
+
+# Critic: 현재 상태의 가치 평가 (Global State -> Value)
+class Critic(nn.Module):
+    def __init__(self, global_state_dim):
+        super(Critic, self).__init__()
+        self.net = nn.Sequential(
+            nn.Linear(global_state_dim, 64),
+            nn.Tanh(),
+            nn.Linear(64, 64),
+            nn.Tanh(),
+            nn.Linear(64, 1)
+        )
+        
+    def forward(self, x):
+        return self.net(x)
+
+
 
 if __name__ == "__main__":
     state_dim  = 3
