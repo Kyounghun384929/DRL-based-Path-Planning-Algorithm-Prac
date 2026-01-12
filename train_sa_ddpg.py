@@ -1,4 +1,3 @@
-from git import Actor
 import torch
 
 from src.algorithms import DDPGAgent
