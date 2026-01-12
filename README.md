@@ -15,10 +15,10 @@ Currently, agents are trained using the DQN (Deep Q-Network) and PPO (Proximal P
     - [ ] SAC (Soft Actor-Critic)
     
 - Multi-Agent
-    - [ ] IQN (Independent Q-Learning)
-    - [ ] VDN (Value Decomposition Networks)
+    - [x] IQL (Independent Q-Learning) (Done 2026-01-10)
+    - [x] VDN (Value Decomposition Networks) (Done 2026-01-12)
     - [ ] MADDPG (Multi-Agent Deep Deterministic Policy Gradient)
-    - [ ] QMIX
+    - [x] QMIX (Done 2026-01-12)
     - [ ] COMA (Counterfactual Multi-Agent Policy Gradients)
 
 
