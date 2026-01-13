@@ -285,6 +285,9 @@ if __name__ == "__main__":
         state, _, dones = env.step(action)
         if dones.all():
             break
+        
+    torch.save(agent.actor.state_dict(), "mappo_actor_500steps.pth")
+    torch.save(agent.critic.state_dict(), "mappo_critic_500steps.pth")
     
     print("Final Positions:")
     for i in range(env.num_agents):
