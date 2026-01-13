@@ -74,6 +74,15 @@ Settings:
 
 ![2D_DDPG](docs/2D-ddpg.gif)
 
+
+### MAPPO
+Model Path: db\saves\mappo\2d\mappo_actor_500steps.pth
+Settings :
+- max_steps=500
+- max_episodes=1000 (For training)
+
+![2D_MAPPO](docs/2D-mappo.gif)
+
 # Thanks to  
 ...
 
