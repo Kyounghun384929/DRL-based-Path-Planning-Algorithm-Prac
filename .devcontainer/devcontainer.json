@@ -1,6 +1,6 @@
 {
 	"name": "MARL Path Planning Dev Container",
-	"image": "kkyounghun/mydev:python313-torch291",
+	"image": "kkyounghun/mydev:python312-pytorch",
 	
 	// "build": {
 	// 	"dockerfile": "Dockerfile",
